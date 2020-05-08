@@ -26,7 +26,7 @@ class StockCard extends Component {
 
     info = async () => {
 
-        let response = await axios.get(`https://cloud.iexapis.com/stable/stock/${this.props.data.symbol}/chart/dynamic?token=pk_5f45975bb732477ea82e9562237c763e`)
+        let response = await axios.get(`https://cloud.iexapis.com/stable/stock/${this.props.data.symbol}/chart/5d?token=pk_5f45975bb732477ea82e9562237c763e`)
 
         console.log(response.data);
         Modal.success({
@@ -35,7 +35,7 @@ class StockCard extends Component {
             content: (
                 <div className="tradingview-widget-container" id="stockChart">
 
-                    <LineChart width={600} height={200} data={response.data.data}
+                    <LineChart width={600} height={200} data={response.data}
                                margin={{top: 10, right: 30, left: 0, bottom: 0}}>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <XAxis dataKey="label">
