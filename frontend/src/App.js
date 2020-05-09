@@ -35,15 +35,19 @@ function validateNumber(number) {
 
 class App extends Component {
 
-    state = {
-        current: 0,
-        showSubmit: false,
-        enableBack: false,
-        validateNumberStatus: 'success',
-        validateOptionStatus: 'success',
-        amount: 5000,
-        selectedItems: [],
-    };
+    constructor(){
+        super();
+        this.state = {
+            current: 0,
+            showSubmit: false,
+            enableBack: false,
+            validateNumberStatus: 'success',
+            validateOptionStatus: 'success',
+            amount: 5000,
+            selectedItems: [],
+        };
+
+    }
 
     componentDidMount() {
         const script = document.createElement('script');
@@ -220,7 +224,6 @@ class App extends Component {
 
     handleSubmit = () => {
         this.setState({current: 3});
-        message.info('Fetching Results');
         let query = {};
         query.amount = this.state.amount;
         query.strategy = this.state.selectedItems;

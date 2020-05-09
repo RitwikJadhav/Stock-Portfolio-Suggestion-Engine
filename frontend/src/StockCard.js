@@ -26,25 +26,30 @@ class StockCard extends Component {
 
     info = async () => {
 
-        let response = await axios.get(`https://cloud.iexapis.com/stable/stock/${this.props.data.symbol}/chart/5d?token=pk_5f45975bb732477ea82e9562237c763e`)
-
+        let response = await axios.get(`https://cloud.iexapis.com/stable/stock/${this.props.data.symbol}/chart/1m?token=pk_5f45975bb732477ea82e9562237c763e`)
+console.clear();
         console.log(response.data);
+        let resp = response.data.map(v => {
+            v.high = (v.high * this.props.quantity).toFixed(2);
+            v.low = (v.low * this.props.quantity).toFixed(2);
+            return v;
+        })
         Modal.success({
             title: `Stock Details for ${this.props.data.companyName} (${this.props.data.symbol})`,
             width: 700,
             content: (
                 <div className="tradingview-widget-container" id="stockChart">
 
-                    <LineChart width={600} height={200} data={response.data}
+                    <LineChart width={600} height={200} data={resp} cursor='pointer'
                                margin={{top: 10, right: 30, left: 0, bottom: 0}}>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <XAxis dataKey="label">
                             <Label value="Date" offset={0} position="insideBottom"/>
                         </XAxis>
-                        <YAxis label={{value: 'Price($)', angle: -90, position: 'insideLeft'}}/>
+                        <YAxis label={{value: 'Portfolio($)', angle: -90, position: 'insideLeft'}}/>
                         <Tooltip/>
-                        <Line connectNulls={true} type='monotone' dataKey='close' stroke='#82ca9d' fill='#82ca9d'/>
-                        <Line connectNulls={true} type='monotone' dataKey='open' stroke='#8884d8' fill='#8884d8'/>
+                        <Line connectNulls={true} type='monotone' dataKey='high' stroke='rgba(106, 204, 66, 0.65)' fill='rgba(106, 204, 66, 0.65)'/>
+                        <Line connectNulls={true} type='monotone' dataKey='low' stroke='rgba(238, 78, 90, 0.65)' fill='rgba(238, 78, 90, 0.65)'/>
                     </LineChart>
 
                 </div>
@@ -81,14 +86,16 @@ class StockCard extends Component {
                           onClick={this.info}
                           hoverable
                           style={cardStyle}>
-                        <Text strong>Price: </Text>{props.latestPrice} $
+                        <Text strong>Price: </Text>$ {props.latestPrice}
                         <br/>
-                        <Text strong>Invest Amount: </Text>{Math.round(this.props.amount)} $
+                        <Text strong>Invest Amount: </Text>$ {(this.props.amount).toFixed(2)}
+                        <br />
+                        <Text strong>Stocks Purchased: </Text>{(this.props.quantity)}
                         <br/>
                         <Icon type={icon} style={{
                             color: iconColor,
                             fontSize: 20
-                        }}/> {props.change} $
+                        }}/> $ {props.change}
                         <Text style={{fontSize: 10}}>( {(props.changePercent * 100).toFixed(2)} % )</Text>
                         <br/>
                         <div style={{textAlign: 'right'}}>
