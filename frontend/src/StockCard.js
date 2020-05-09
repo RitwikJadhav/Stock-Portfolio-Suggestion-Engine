@@ -5,8 +5,6 @@ import {
 } from 'recharts';
 import axios from 'axios';
 
-const queryString = require('query-string');
-
 const {Title, Paragraph, Text} = Typography;
 
 

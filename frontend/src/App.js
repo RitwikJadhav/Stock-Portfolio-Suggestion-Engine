@@ -4,8 +4,6 @@ import 'antd/dist/antd.css';
 import { Steps, Row, Col, Button, message, Form, InputNumber, Select, Typography, Divider } from 'antd';
 import { history } from './history';
 
-const queryString = require('query-string');
-
 const {Title, Paragraph, Text} = Typography;
 
 
@@ -228,10 +226,9 @@ class App extends Component {
         query.amount = this.state.amount;
         query.strategy = this.state.selectedItems;
 
-        const stringified = queryString.stringify(query);
+        const parser = new URLSearchParams(query);
 
-
-        history.push('/results?' + stringified);
+        history.push('/results?' + parser.toString());
 
     }
 

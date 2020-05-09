@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Typography, Divider, Spin, Row, Col, Card, message } from 'antd';
 import axios from 'axios';
 import StockCard from './StockCard'
-
-const queryString = require('query-string');
+import { withRouter } from "react-router-dom";
 
 const {Title, Paragraph, Text} = Typography;
 
@@ -23,21 +22,17 @@ class ResultApp extends Component {
     async componentDidMount() {
         
         message.loading({ content: 'Loading...', key: 'updatable' });
-        const values = queryString.parse(this.props.location.search)
 
-        this.setState({amount: parseInt(values.amount), strategyList: values.strategy})
+        const parser = new URLSearchParams(this.props.location.search);
+        const strategies = parser.get("strategy").split(',');
+
+        this.setState({amount: parseInt(parser.get("amount")), strategyList: strategies})
 
         //API call to server to fetch information
 
         let postBody = {}
-        postBody.Amount = parseInt(values.amount);
-        postBody.Strategies = [];
-        if (values.strategy.length === 2) {
-            postBody.Strategies = [...values.strategy]
-        }
-        else {
-            postBody.Strategies.push(values.strategy)
-        }
+        postBody.Amount = parseInt(parser.get("amount"));
+        postBody.Strategies = strategies;
 
         console.log(postBody);
 
@@ -70,7 +65,6 @@ class ResultApp extends Component {
         let left1 = 0;
         let left2 = 0;
 
-        console.clear();
         let resp = response.data.amountResponse.map(v => v);
         let state = this.state;
         resp.forEach((v,i,arr) => {
@@ -100,12 +94,6 @@ class ResultApp extends Component {
             })
         }
         this.setState(state);
-
-        console.log(this.state.amountResponse);
-        console.log(amountResponse2);
-        console.log(left1);
-        console.log(left2);
-        console.log(stocks);
 
 
         // if (response.data.strategiesResponse[1]) {
@@ -223,4 +211,4 @@ class ResultApp extends Component {
 }
 
 
-export default ResultApp;
+export default withRouter(ResultApp);
