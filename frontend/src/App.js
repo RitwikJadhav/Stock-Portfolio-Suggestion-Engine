@@ -181,7 +181,7 @@ class App extends Component {
                 }
             ]
         });
-        document.getElementById("rohit").appendChild(script);
+        document.getElementById("widget").appendChild(script);
     }
 
     handleNext = () => {
@@ -359,7 +359,7 @@ class App extends Component {
                     </Row>
                     <Row>
                         <Col span={16} offset={4}>
-                            <div id="rohit">
+                            <div id="widget">
                                 <div className="tradingview-widget-container">
                                     <div className="tradingview-widget-container__widget"></div>
 
